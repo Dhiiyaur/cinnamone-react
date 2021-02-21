@@ -31,6 +31,7 @@ function OrderSummary() {
 
     const cookies = new Cookies()
     const [isLoggedIn, setisLoggedIn] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [orderItems, setorderItems] = useState([])
     const [info, setinfo] = useState('')
     const imageLink = 'https://be-cinnamone.herokuapp.com'
@@ -51,6 +52,7 @@ function OrderSummary() {
             // console.log(res.data.order_items)
             setorderItems(res.data.order_items)
             setinfo(res.data.total_price)
+            setLoading(false)
 
 
         })
@@ -89,135 +91,152 @@ function OrderSummary() {
 
     return (
         <div>
-            {isLoggedIn && (
-            <div>
-            <Container maxWidth='md'>
-                <Grid container spacing={3} m={2} justify='center' style={{ marginTop : 100 }}>
-                <Typography component="h1" variant="h5">
-                        Order Summmary
-                </Typography>
+
+            {loading && (
+
+                <Grid container spacing={3} m={2} justify='center' style={{ marginTop : 150 }}>
+                    <CircularProgress color="secondary"/>
                 </Grid>
-                
-                {orderItems.map(item =>{
 
-                    return(
-                        <div>
-                            <Grid container spacing={3} m={2} style={{ marginTop : 30 }}>
-                                <Grid item md={6} lg={3} xs={12}>
-                                    <CardMedia
-                                        component="img"
-                                        alt=" "
-                                        // height="500"
-                                        // src={`http://127.0.0.1:8000${item.product.image}`}
-                                        src={`${imageLink}${item.product.image}`}
-                                    />
-                                </Grid>
-                                <Grid item md={6} lg={9} xs={12}>
-                                    <ListItem>
-                                        <ListItemText primary= {item.product.product_name}
-                                                     secondary= {`Total Price: ${item.final_price}`}
-                                                    
-                                        />
-                                        <ListItemText>
-                                        <ListItemSecondaryAction>
-                                        <IconButton color="secondary" 
-                                                    aria-label="add to shopping cart" 
-                                                    onClick={() => { 
+            )}
 
-                                                    let userToken = cookies.get("Cinnamone_Login_Token");
-                                                    let postData = {
-                                                        
-                                                        slug : item.product.slug
-                                                    }
-
-                                                    let config = {
-                                                        
-                                                        headers : {
-                                                            
-                                                            'Authorization' : `Token ${userToken}`
-                                                    }}
-
-                                                    axios.post(apiUserAddItem, postData, config)
-                                                    .then((res) => {
-                                                        // console.log(res)
-                                                        window.location.href='/order-summary/'
-
-                                                    })
-
-                                                    .catch(error => {
-                                                        console.log(error.response)
-
-                                                    })
-
-                                                    }}>
-                                            <AddBoxIcon />
-                                        </IconButton>
-                                        {item.quantity}
-                                        <IconButton color="secondary" 
-                                                    aria-label="add to shopping cart"
-                                                    onClick={() => { 
-
-                                                        let userToken = cookies.get("Cinnamone_Login_Token");
-                                                        let postData = {
-                                                            
-                                                            slug : item.product.slug
-                                                        }
-        
-                                                        let config = {
-                                                            
-                                                            headers : {
-                                                                
-                                                                'Authorization' : `Token ${userToken}`
-                                                        }}
-                                                        
-                                                        axios.post(apiUserRemoveItem, postData, config)
-                                                        .then((res) => {
-                                                            // console.log(res)
-                                                            window.location.href='/order-summary/'
-                                                
-                                                        })
-                                                
-                                                        .catch(error => {
-                                                            console.log(error.response)
-        
-                                                        })
-                                            }}>
-                                            <IndeterminateCheckBoxIcon />
-                                        </IconButton>
-                                        </ListItemSecondaryAction>
-                                        </ListItemText>
-                                    </ListItem>
-                                </Grid>
-                            </Grid>
-                        </div>
-                        )
-                })}
-                        
-                <Grid item xs={12} style={{ marginTop : 50, marginBottom : 10}}>
-                    
-                    <Typography variant="body2" color='error' component="p">
-                        Do not delay the purchase, adding items to your cart does not mean booking them.
-                    </Typography>
-
-                    <ListItem>
-                        <ListItemText primary= {'The total amount of'}/>
-                        <Typography variant="body2">
-                            Rp. {info}
+            {!loading && (
+                <div>
+                {isLoggedIn && (
+                    <div>
+                    <Container maxWidth='md'>
+                        <Grid container spacing={3} m={2} justify='center' style={{ marginTop : 100 }}>
+                        <Typography component="h1" variant="h5">
+                                Order Summmary
                         </Typography>
-                    </ListItem>
-                    <ButtonGroup fullWidth style={{ marginTop : 30}}>
-                    <Button variant="contained" 
-                            color="secondary"
-                            onClick={() => { window.location.href='/checkout/' }}>
-                        Checkout
-                    </Button>
-                    </ButtonGroup>
+                        </Grid>
+                        
+                        {orderItems.map(item =>{
+
+                            return(
+                                <div>
+                                    <Grid container spacing={3} m={2} style={{ marginTop : 30 }}>
+                                        <Grid item md={6} lg={3} xs={12}>
+                                            <CardMedia
+                                                component="img"
+                                                alt=" "
+                                                // height="500"
+                                                // src={`http://127.0.0.1:8000${item.product.image}`}
+                                                src={`${imageLink}${item.product.image}`}
+                                            />
+                                        </Grid>
+                                        <Grid item md={6} lg={9} xs={12}>
+                                            <ListItem>
+                                                <ListItemText primary= {item.product.product_name}
+                                                            secondary= {`Total Price: ${item.final_price}`}
+                                                            
+                                                />
+                                                <ListItemText>
+                                                <ListItemSecondaryAction>
+                                                <IconButton color="secondary" 
+                                                            aria-label="add to shopping cart" 
+                                                            onClick={() => { 
+
+                                                            let userToken = cookies.get("Cinnamone_Login_Token");
+                                                            let postData = {
+                                                                
+                                                                slug : item.product.slug
+                                                            }
+
+                                                            let config = {
+                                                                
+                                                                headers : {
+                                                                    
+                                                                    'Authorization' : `Token ${userToken}`
+                                                            }}
+
+                                                            axios.post(apiUserAddItem, postData, config)
+                                                            .then((res) => {
+                                                                // console.log(res)
+                                                                window.location.href='/order-summary/'
+
+                                                            })
+
+                                                            .catch(error => {
+                                                                console.log(error.response)
+
+                                                            })
+
+                                                            }}>
+                                                    <AddBoxIcon />
+                                                </IconButton>
+                                                {item.quantity}
+                                                <IconButton color="secondary" 
+                                                            aria-label="add to shopping cart"
+                                                            onClick={() => { 
+
+                                                                let userToken = cookies.get("Cinnamone_Login_Token");
+                                                                let postData = {
+                                                                    
+                                                                    slug : item.product.slug
+                                                                }
+
+                                                                let config = {
+                                                                    
+                                                                    headers : {
+                                                                        
+                                                                        'Authorization' : `Token ${userToken}`
+                                                                }}
+                                                                
+                                                                axios.post(apiUserRemoveItem, postData, config)
+                                                                .then((res) => {
+                                                                    // console.log(res)
+                                                                    window.location.href='/order-summary/'
+                                                        
+                                                                })
+                                                        
+                                                                .catch(error => {
+                                                                    console.log(error.response)
+
+                                                                })
+                                                    }}>
+                                                    <IndeterminateCheckBoxIcon />
+                                                </IconButton>
+                                                </ListItemSecondaryAction>
+                                                </ListItemText>
+                                            </ListItem>
+                                        </Grid>
+                                    </Grid>
+                                </div>
+                                )
+                        })}
+                                
+                        <Grid item xs={12} style={{ marginTop : 50, marginBottom : 10}}>
+                            
+                            <Typography variant="body2" color='error' component="p">
+                                Do not delay the purchase, adding items to your cart does not mean booking them.
+                            </Typography>
+
+                            <ListItem>
+                                <ListItemText primary= {'The total amount of'}/>
+                                <Typography variant="body2">
+                                    Rp. {info}
+                                </Typography>
+                            </ListItem>
+                            <ButtonGroup fullWidth style={{ marginTop : 30}}>
+                            <Button variant="contained" 
+                                    color="secondary"
+                                    onClick={() => { window.location.href='/checkout/' }}>
+                                Checkout
+                            </Button>
+                            </ButtonGroup>
+                            
+                        </Grid>
                     
-                </Grid>
-            
-            </Container>
+                    </Container>
+                    </div>
+                    )}
+
             </div>
             )}
+
+
+ 
         </div>
     )
 }

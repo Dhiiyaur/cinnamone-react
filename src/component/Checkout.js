@@ -13,6 +13,7 @@ import {
     List,
     ListItemText,
     ListItem,
+    CircularProgress
     
 
 } from "@material-ui/core";
@@ -49,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
 function Checkout() {
 
     const cookies = new Cookies()
+    const [loading, setLoading] = useState(true)
     const classes = useStyles();
     const { handleSubmit, control } = useForm();
     const [paymentOption, setpaymentOption] = useState();
@@ -57,7 +59,7 @@ function Checkout() {
 
     const [formError, setformError] = useState(false)
     const [registerError, setRegisterError] = useState(false)
-
+    
     useEffect(() => {
 
         let userToken = cookies.get("Cinnamone_Login_Token");
@@ -70,7 +72,7 @@ function Checkout() {
             console.log(res)
             setuserOrder(res.data.order_items)
             setinfo(res.data.total_price)
-            
+            setLoading(false)
 
         })
 
@@ -136,8 +138,16 @@ function Checkout() {
         <div>
             {/* <Container component="main" maxWidth="md" style={{ marginTop : 120 }}> */}
             {/* <Container component="main" style={{ marginTop : 120 }}> */}
+            {loading && (
+
+                <Grid container spacing={3} m={2} justify='center' style={{ marginTop : 150 }}>
+                    <CircularProgress color="secondary"/>
+                </Grid>
+
+            )}
+            {!loading && (
             <Container>
-            <Grid container spacing={3} m={2} justify='center' style={{ marginTop : 150 }}>
+            <Grid container spacing={3} m={2} justify='center' style={{ marginTop : 100 }}>
             <Typography component="h1" variant="h5">
                     Checkout Form
             </Typography>
@@ -286,6 +296,7 @@ function Checkout() {
                 </Grid>
                 </Grid>
                 </Container>
+                )}
         </div>
     )
 }

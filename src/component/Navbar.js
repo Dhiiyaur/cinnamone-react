@@ -192,7 +192,7 @@ export default function PrimarySearchAppBar() {
         </IconButton>
         <p>Home</p>
       </MenuItem>
-      <MenuItem onClick={() => {
+      {/* <MenuItem onClick={() => {
 							        window.location.href='/browse'
 						          }}>
         <IconButton color="inherit">
@@ -201,7 +201,7 @@ export default function PrimarySearchAppBar() {
         
         </IconButton>
         <p>Browse Manga</p>
-      </MenuItem>
+      </MenuItem> */}
       <MenuItem onClick={() => {
 							        window.location.href='/order-summary/'
 						          }}>
@@ -251,12 +251,12 @@ export default function PrimarySearchAppBar() {
 							        window.location.href='/'
 						      }}/>
             </IconButton>
-            <IconButton color="inherit">
+            {/* <IconButton color="inherit">
                 <MenuBookIcon 
                     onClick={() => {
 							        window.location.href='/browse'
 						      }}/>
-            </IconButton>
+            </IconButton> */}
             <IconButton color="inherit">
             {/* <Badge badgeContent={4} color="secondary"> */}
             <Badge badgeContent={userCartCount} color="secondary" invisible={userCartCount === 0}>

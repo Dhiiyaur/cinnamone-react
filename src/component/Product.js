@@ -15,7 +15,7 @@ import {
     Typography,
     // Link,
     Button,
-    // CircularProgress
+    CircularProgress
 
  } from '@material-ui/core'
 
@@ -43,7 +43,7 @@ function Product() {
             })
 
             if(mounted){
-                console.log(productData.data)
+                // console.log(productData.data)
                 setproductDetailData(productData.data)
                 setLoading(false)
     
@@ -59,6 +59,14 @@ function Product() {
     
     return (
         <div>
+            {loading && (
+
+            <Grid container spacing={3} m={2} justify='center' style={{ marginTop : 150 }}>
+                <CircularProgress color="secondary"/>
+            </Grid>
+
+            )}
+            {!loading && (
             <Container>
             <Grid container spacing={3} m={2} justify='center' style={{ marginTop : 100 }}>
             <Grid item md={6}>
@@ -128,7 +136,7 @@ function Product() {
             </Grid>
             </Grid>
             </Container>
-            
+            )}
         </div>
     )
 }
