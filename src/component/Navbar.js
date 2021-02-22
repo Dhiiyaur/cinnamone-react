@@ -52,6 +52,9 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  customBadge:{
+    color: "white"
+  }
 }));
 
 
@@ -207,7 +210,7 @@ export default function PrimarySearchAppBar() {
 						          }}>
         <IconButton color="inherit">
         {/* <Badge badgeContent={4} color="secondary" > */}
-        <Badge badgeContent={userCartCount} color="secondary" invisible={userCartCount === 0}>
+        <Badge badgeContent={userCartCount} color="error" invisible={userCartCount === 0}>
             <ShoppingCartIcon />
         </Badge>
         </IconButton>
@@ -238,7 +241,7 @@ export default function PrimarySearchAppBar() {
     // <MuiThemeProvider theme={theme}>
     <div className={classes.grow}>
       <Slide appear={false} direction="down" in={!trigger}>
-      <AppBar style={{ background: '#2E3B55' }}>
+      <AppBar style={{ background: '#FF6666' }}>
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
             Cinnamone
@@ -259,7 +262,7 @@ export default function PrimarySearchAppBar() {
             </IconButton> */}
             <IconButton color="inherit">
             {/* <Badge badgeContent={4} color="secondary"> */}
-            <Badge badgeContent={userCartCount} color="secondary" invisible={userCartCount === 0}>
+            <Badge badgeContent={userCartCount} color="error" invisible={userCartCount === 0}>
                 <ShoppingCartIcon
                     onClick={() => {
 							        window.location.href='/order-summary/'

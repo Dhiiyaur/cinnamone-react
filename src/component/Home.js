@@ -101,40 +101,50 @@ export default function Home() {
     const productList = (
 
         <div>
-            <Grid container spacing={3} m={2} justify='center' style={{ marginTop : 100 }}>
-                {loading && (
-                    <CircularProgress color="secondary"/>
-                )}
-            </Grid>
-            <Grid container spacing={3} m={2} justify='center'>
-            {productData.map(item =>{
             
-                return(
-                <Grid item lg={3} xs={6}>
-                <Card className={classes.root} style={{ height: '100%' }}>
-                    <CardActionArea>
-                    <Link underline='none' component={RouterLink} to={`/product/${item.slug}`}>
-                    <CardMedia
-                        component="img"
-                        alt=" "
-                        height="350"
-                        src={item.image}
-                        title="manga title"
-                    />
-                    <CardContent>
-                        <Typography variant="body2" color="textSecondary" component="p" className={classes.mobileText}>
-                            {item.product_name}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p" className={classes.mobileText}>
-                            Rp. {item.price}
-                        </Typography>
-                    </CardContent>
-                    </Link>
-                    </CardActionArea>
-                </Card>
+            {loading && (
+                <Grid container spacing={3} m={2} justify='center' style={{ marginTop : 100 }}>
+                    <CircularProgress color="secondary"/>
                 </Grid>
-            )})}
-            </Grid>
+            )}
+            {!loading && (
+                <div>
+                <Grid container spacing={3} m={2} justify='center' style={{ marginTop : 50 ,marginBottom : 50 }}>
+                    <Typography variant="h5" color="textSecondary" component="h5">
+                        Menu
+                    </Typography>
+                </Grid>
+                <Grid container spacing={3} m={2} justify='center'>
+                {productData.map(item =>{
+                
+                    return(
+                    <Grid item lg={3} xs={6}>
+                    <Card className={classes.root} style={{ height: '100%' }}>
+                        <CardActionArea>
+                        <Link underline='none' component={RouterLink} to={`/product/${item.slug}`}>
+                        <CardMedia
+                            component="img"
+                            alt=" "
+                            height="350"
+                            src={item.image}
+                            title="manga title"
+                        />
+                        <CardContent>
+                            <Typography variant="body2" color="textSecondary" component="p" className={classes.mobileText}>
+                                {item.product_name}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" component="p" className={classes.mobileText}>
+                                Rp. {item.price}
+                            </Typography>
+                        </CardContent>
+                        </Link>
+                        </CardActionArea>
+                    </Card>
+                    </Grid>
+                )})}
+                </Grid>
+                </div>
+            )}
         </div>
     )
 
@@ -146,7 +156,7 @@ export default function Home() {
                 {/* <Typography variant="h4" component="h4" color='textPrimary'>
                     Cinnamone
                 </Typography> */}
-
+            <Grid container spacing={3} m={2} justify='center' style={{ marginTop : 55 }}>
             <AliceCarousel
                     autoWidth
                     autoHeight
@@ -168,7 +178,8 @@ export default function Home() {
                 <img src={imageThree} className="sliderimg"/>
 
             </AliceCarousel>
-            <Container>     
+            </Grid>
+            <Container>    
                 {productList}
             </Container>
             </MuiThemeProvider>

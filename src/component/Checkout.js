@@ -105,11 +105,12 @@ function Checkout() {
         else{
 
             let userToken = cookies.get("Cinnamone_Login_Token");
+            // axios.post('http://127.0.0.1:8000/api/checkout/',{
             axios.post(apiUserCheckout,{
 
-                name : data.name,
-                address    : data.address,
-                phone : data.phone,
+                name        : data.name,
+                address     : data.address,
+                phone       : data.phone,
                 payment_option : paymentOption
             },{
                                                 
@@ -121,6 +122,7 @@ function Checkout() {
     
             .then((res) => {
                 console.log(res.data)
+                window.location.href='/'
                 
     
             })
