@@ -42,7 +42,10 @@ export default function SignUp() {
     const classes = useStyles();
     const { handleSubmit, control } = useForm();
     const [formError, setformError] = useState(false)
-    const [registerError, setRegisterError] = useState(false)
+    const [registerErrorEmail, setRegisterErrorEmail] = useState(false)
+    const [statusErrorEmail, setstatusErrorEmail] = useState("")
+    const [statusErrorPw, setstatusErrorPw] = useState("")
+    const [registerErrorPassword, setRegisterErrorPassword] = useState(false)
 
     const theme = createMuiTheme({
         palette:{
@@ -57,6 +60,7 @@ export default function SignUp() {
         if(data.password1 != data.password2){
         
             setformError(true)
+
         }else{
 
         axios.post(apiRegister,{
@@ -68,14 +72,25 @@ export default function SignUp() {
         })
 
         .then((res) => {
-            console.log(res.data)
+            
+            // console.log(res.data)
             window.location.href='/auth/signin/'
 
         })
 
-        .catch(error => {
-            console.log(error.response)
-            setRegisterError(true)
+        .catch((err) => {
+
+            if (err.response.data.email){
+
+                setstatusErrorEmail(err.response.data.email[0])
+                setRegisterErrorEmail(true)
+            }
+            if (err.response.data.password1){
+
+                setstatusErrorPw(err.response.data.password1[0])
+                setRegisterErrorPassword(true)
+            }
+            
         })
     }
     } 
@@ -140,9 +155,9 @@ export default function SignUp() {
                         }}
                     />
 
-                    {registerError && (
+                    {registerErrorEmail && (
                         <Typography color='error'>
-                            Email already exist
+                            {statusErrorEmail}
                         </Typography>
                     )}
 
@@ -196,6 +211,12 @@ export default function SignUp() {
                     <Typography color='error'>
                         Password didnt  match
                     </Typography>
+                    )}
+
+                    {registerErrorPassword && (
+                        <Typography color='error'>
+                            {statusErrorPw}
+                        </Typography>
                     )}
 
                     <Button
