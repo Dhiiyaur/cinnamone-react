@@ -59,30 +59,6 @@ function Checkout() {
 
     const [formError, setformError] = useState(false)
     const [registerError, setRegisterError] = useState(false)
-    
-    useEffect(() => {
-
-        let userToken = cookies.get("Cinnamone_Login_Token");
-        axios.get(apiUserCart, {
-            headers: {
-              'Authorization': `Token ${userToken}`
-            }
-        })
-        .then((res) => {
-            console.log(res)
-            setuserOrder(res.data.order_items)
-            setinfo(res.data.total_price)
-            setLoading(false)
-
-        })
-
-        .catch(error => {
-            console.log(error.response)
-
-        })
-        
-    
-    }, [])
 
     const handlePaymentSelect = (event, newPayment) => {
         setpaymentOption(newPayment);
@@ -112,6 +88,7 @@ function Checkout() {
                 address     : data.address,
                 phone       : data.phone,
                 payment_option : paymentOption
+
             },{
                                                 
                 headers : {
@@ -135,48 +112,63 @@ function Checkout() {
         }
 
 
+    const fecthData = () => {
 
-    return (
+        let userToken = cookies.get("Cinnamone_Login_Token");
+        axios.get(apiUserCart, {
+            headers: {
+              'Authorization': `Token ${userToken}`
+            }
+        })
+        .then((res) => {
+            console.log(res)
+            setuserOrder(res.data.data)
+            setinfo(res.data.paid_amount)
+            setLoading(false)
+
+        })
+
+        .catch(error => {
+            console.log(error.response)
+
+        })
+    }
+
+    const loadingData = (
         <div>
-            {/* <Container component="main" maxWidth="md" style={{ marginTop : 120 }}> */}
-            {/* <Container component="main" style={{ marginTop : 120 }}> */}
-            {loading && (
+        <Grid container spacing={3} m={2} justify='center' style={{ marginTop : 150 }}>
+        <CircularProgress color="secondary"/>
+        </Grid>
+        </div>
+    )
 
-                <Grid container spacing={3} m={2} justify='center' style={{ marginTop : 150 }}>
-                    <CircularProgress color="secondary"/>
-                </Grid>
-
-            )}
-            {!loading && (
-            <Container>
-            <Grid container spacing={3} m={2} justify='center' style={{ marginTop : 100 }}>
-            <Typography component="h1" variant="h5">
-                    Checkout Form
-            </Typography>
-            </Grid>
-
-            <Grid container spacing={3} m={2} justify='center' style={{ marginTop : 50 }}>
-                <CssBaseline />
-                <Grid item md={8}>
-                <div className={classes.paper}>
-
-                    <form className={classes.form} onSubmit={handleSubmit(onSubmitRegister)}>
-                    <Controller
-                        name='name'
-                        as={
-                            <TextField
-                                variant="filled"
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="name"
-                                label="Name"
-                                name="name"
-                                // autoComplete="username"
-                                autoFocus
-                            />
+    const userCheckoutData = (
+        <div>
+        <Container>
+        <Grid container spacing={3} m={2} justify='center' style={{ marginTop : 100 }}>
+        <Typography component="h1" variant="h5">
+                Checkout Form
+        </Typography>
+        </Grid>
+        <Grid container spacing={3} m={2} justify='center' style={{ marginTop : 50 }}>
+            <CssBaseline />
+            <Grid item md={8}>
+            <div className={classes.paper}>
+            <form className={classes.form} onSubmit={handleSubmit(onSubmitRegister)}>
+                <Controller
+                    name='name'
+                    as={
+                    <TextField
+                        variant="filled"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="name"
+                        label="Name"
+                        name="name"
+                        // autoComplete="username"
+                        autoFocus/>
                     }
-
                         control={control}
                         defaultValue=""
                         rules={{
@@ -184,21 +176,18 @@ function Checkout() {
                         }}
 
                     />
-                    <Controller
-                        name='address'
-                        as={
-
-                        <TextField
-                            variant="filled"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="address"
-                            label="address"
-                            name="address"
-                            autoFocus
-                        />
-                    
+                <Controller
+                    name='address'
+                    as={
+                    <TextField
+                        variant="filled"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="address"
+                        label="address"
+                        name="address"
+                        autoFocus/>
                     }
                         control={control}
                         defaultValue=""
@@ -207,21 +196,19 @@ function Checkout() {
                         }}
                     />
 
-                    <Controller
-                        name='phone'
-                        as={
+                <Controller
+                    name='phone'
+                    as={
 
-                        <TextField
-                            variant="filled"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="phone"
-                            label="phone"
-                            type="phone"
-                            id="phone"
-                            
-                        />
+                    <TextField
+                        variant="filled"
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="phone"
+                        label="phone"
+                        type="phone"
+                        id="phone"/>
                     }
                         control={control}
                         defaultValue=""
@@ -232,15 +219,14 @@ function Checkout() {
 
                 <br />
                 <Typography variant="body2" color="textSecondary" component="p">
-                            Payment Option
+                    Payment Option
                 </Typography>
                 <br />
                 <ToggleButtonGroup
-                        value={paymentOption}
-                        exclusive
-                        onChange={handlePaymentSelect}
-                        aria-label="lang selected"
-                    >
+                    value={paymentOption}
+                    exclusive
+                    onChange={handlePaymentSelect}
+                    aria-label="lang selected">
                     <ToggleButton value="debit" aria-label="left aligned" className={classes.buttonColor}>
                         Debit Card
                     </ToggleButton>
@@ -260,45 +246,52 @@ function Checkout() {
                     fullWidth
                     variant="contained"
                     color="primary"
-                    className={classes.submit}
-                >
+                    className={classes.submit}>
                     Order
                 </Button>
+        </form>
+        </div>
+        </Grid>
+        <Grid item md={4} style={{ marginTop : 30 }}>
+        <Typography component="h6" variant="h6">
+            Order Detail
+        </Typography>   
+        <List>
+            {userOrder.map(item =>{   
+                return(
+                <ListItem>
+                    <ListItemText 
+                        primary= {item.product}
+                        secondary= {`Quantity: ${item.quantity}`}/>
+                    <Typography variant="body2">
+                        Rp. {item.total_price}
+                    </Typography>
+                </ListItem>
+            )})}
+                <ListItem>
+                    <ListItemText primary="Total price" />
+                    <Typography variant="body2">
+                        Rp.{info}
+                    </Typography>
+                </ListItem>
+        </List>
+        </Grid>
+        </Grid>
+        </Container>
+        </div>
+    )
+    
+    useEffect(() => {
 
+        fecthData()
+    
+    }, [])
 
+    return (
+        <div>
 
-                    </form>
-                </div>
-                </Grid>
-                <Grid item md={4} style={{ marginTop : 30 }}>
-                <Typography component="h6" variant="h6">
-                    Order Detail
-                </Typography>   
-                <List>
-                    {userOrder.map(item =>{   
-                        return(
-                        <ListItem>
-                            <ListItemText primary= {item.product.product_name}
-                                          secondary= {`Quantity: ${item.quantity}`}
-                                          
-                            />
-                            <Typography variant="body2">
-                                Rp. {item.final_price}
-                            </Typography>
-                        </ListItem>
-                    )})}
-                        <ListItem>
-                            <ListItemText primary="Total price" />
-                            <Typography variant="body2">
-                                Rp.{info}
-                            </Typography>
-                        </ListItem>
-                </List>
-
-                </Grid>
-                </Grid>
-                </Container>
-                )}
+        {loading ? (loadingData) : (userCheckoutData)}
+          
         </div>
     )
 }

@@ -73,13 +73,14 @@ export default function SignUp() {
 
         .then((res) => {
             
-            // console.log(res.data)
+            console.log(res)
             window.location.href='/auth/signin/'
 
         })
 
         .catch((err) => {
 
+            console.log(err)
             if (err.response.data.email){
 
                 setstatusErrorEmail(err.response.data.email[0])

@@ -99,7 +99,7 @@ export default function PrimarySearchAppBar() {
   const [isLoggedIn, setisLoggedIn] = useState(false)
   
 
-  function tokenCheck(){
+  const tokenCheck = () => {
 
     let userToken = cookies.get("Cinnamone_Login_Token");
     // console.log(cookies.get("Mangamee_Login_Token"))
@@ -115,10 +115,10 @@ export default function PrimarySearchAppBar() {
 
     .then((res) => {
         // console.log(res.data)
-        console.log(res.data.order_items.length)
+        console.log(res.data.data.length)
         // setorderItems(res.data.order_items)
         // setinfo(res.data.total_price)
-        setuserCartCount(res.data.order_items.length)
+        setuserCartCount(res.data.data.length)
 
 
       })
@@ -135,7 +135,7 @@ export default function PrimarySearchAppBar() {
   }
 
 
-  function deleteToken(){
+  const deleteToken =() => {
 
     cookies.remove("Cinnamone_Login_Token" ,{ path: '/' })
     window.location.href='/'
